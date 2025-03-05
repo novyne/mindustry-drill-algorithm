@@ -43,7 +43,7 @@ class DrillAlgorithm:
         s = ''
         
         # charset = '█+X '
-        charset = ['\033[92m█','\033[94m█','\033[91m█',' ', '\033[93m█','\033[95m']
+        charset = ['\033[92m█','\033[94m█','\033[91m█', ' ', '\033[93m█','\033[95m']
         
         for x in range(self.x):
             for y in range(self.y):
@@ -52,9 +52,9 @@ class DrillAlgorithm:
                 if self.drillmap[x, y] == 1 and self.ore[x, y] == 1:
                     i = 0
                 elif self[x, y] == 1:
-                    i = 2
-                elif self.conveyormap[x, y] == 1:
                     i = 4
+                elif self.conveyormap[x, y] == 1:
+                    i = 2
                 elif self.ore[x, y] == 1:
                     i = 1
                 else:
@@ -123,7 +123,7 @@ class DrillAlgorithm:
             int: The number of ore squares covered by the drill.
         """
         
-        ore_covered = 1
+        ore_covered = 0
         
         for dx in range(self.drillx):
             for dy in range(self.drilly):
@@ -278,7 +278,6 @@ class DrillAlgorithm:
                             if (nx, ny) == end:
                                 break
         
-
     def score(self) -> float:
         """Score the drill placement pattern based on drill coverage and exposed ore.
         Returns:
@@ -294,13 +293,13 @@ class DrillAlgorithm:
 def main() -> None:
     """The main program."""
     
-    ore = Ore((20, 20)).random(density=0.5)
+    ore = Ore((20, 20)).random(density=0.9)
     
     print(ore)
     
     drill = DrillAlgorithm(2, 2, ore)
     drill.place_max_safe_drills()
-    drill.find_conveyor_path()
+    # drill.find_conveyor_path()
     print(drill)
     print(drill.score())
     

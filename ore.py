@@ -36,8 +36,8 @@ class Ore:
         
         for x in self.bitmap:
             for y in x:
-                s += ' XO'[y]
-            s += '|\n'
+                s += [' ','\033[94m█', '\033[95m█'][y]
+            s += '\033[0m|\n'
         s += '\n'
         return s
     
