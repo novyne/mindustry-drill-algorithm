@@ -24,7 +24,7 @@ class Ore:
         self.x = shape[0]
         self.y = shape[1]
         
-        self.bitmap = bitmap or np.zeros((self.x + 2, self.y + 2), dtype=int)
+        self.bitmap = bitmap or np.zeros((self.x, self.y), dtype=int)
         
     def __setitem__(self, key, value):
         self.bitmap[key] = value
@@ -37,13 +37,9 @@ class Ore:
         for x in self.bitmap:
             for y in x:
                 s += ' XO'[y]
-            s += '\n'
+            s += '|\n'
         s += '\n'
         return s
-    
-    def pos(self) -> list[tuple[int,int]]:
-        """Return the position of every ore (1 in the bitmap) in a tuple of coordinates."""
-        return [(int(x), int(y)) for x, y in np.argwhere(self.bitmap)]
     
     def dist_from_centre(self, coord: tuple[int, int]) -> int:
         """Obtain the Manhattan distance from the centre of the bitmap to the given coordinates."""
@@ -90,7 +86,7 @@ class Ore:
         
         # find a direction that doesn't go out of range
         rx, ry = rn.choice(dirs)
-        while x + rx not in range(1, self.x + 1) or y + ry not in range(1, self.y + 1):
+        while x + rx not in range(self.x - 1) or y + ry not in range(self.y - 1):
             # 75% chance to skip squares with ore
             if self[x + rx, y + ry] == 0 or rn.random() < 0.75:
                 rx, ry = rn.choice(dirs)
@@ -129,8 +125,3 @@ class Ore:
         random_ore[x, y] = 1
         
         return random_ore
-
-
-ore = Ore((20,20)).random(dev_from_middle=0.25, density=1)
-
-print(ore)
